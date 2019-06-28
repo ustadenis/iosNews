@@ -52,9 +52,25 @@ class NewsTableController: UITableViewController, NewsTableView {
             fatalError()
         }
         
+        let url = URL(string: data[indexPath.row].imageUrl)
+        
         cell.newsLabel.text = data[indexPath.row].newsTitle
-        cell.loadImage(fromUrl: data[indexPath.row].imageUrl)
+        cell.url = url
         cell.newsDescription.text = data[indexPath.row].newsDescription
+        
+        cell.newsImage.image = UIImage(named: "no-image")
+        
+        if let unwrappedUrl = url {
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: unwrappedUrl) {
+                    DispatchQueue.main.async {
+                        if cell.url == unwrappedUrl {
+                            cell.newsImage.image = UIImage(data: data)
+                        }
+                    }
+                }
+            }
+        }
         
         return cell
     }

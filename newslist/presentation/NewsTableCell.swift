@@ -15,18 +15,5 @@ class NewsTableCell : UITableViewCell {
     @IBOutlet weak var newsImage: UIImageView!
     @IBOutlet weak var newsDescription: UILabel!
     
-    func loadImage(fromUrl url: String) {
-        let imageUrl = URL(string: url)!
-        
-        newsImage.image = UIImage(named: "no-image")
-        
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: imageUrl) {
-                DispatchQueue.main.async {
-                    self.newsImage.image = UIImage(data: data)
-                }
-            }
-        }
-    }
-    
+    var url: URL? = nil
 }
